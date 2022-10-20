@@ -1,4 +1,4 @@
-﻿@model List<PacchettoViaggio>
+﻿@model List<Destination>
 @{
     ViewData["Title"] = "Pacchetti Viaggio";
     
@@ -16,30 +16,23 @@
                     <tr>
                         <th>#</th>
                         <th>Nome</th>
-                        <th>Data</th>
-                        <th>Destinazioni</th>
-                        <th>Prezzo</th>
-                        <th>Azione</th>
+                        <th>Paese</th>
+                        <th>Azioni</th>
                     </tr>
                 </thead>
                 <tbody>
                     @if (Model.Count > 0)
                     {
 
-                        @foreach (PacchettoViaggio viaggio in Model)
+                        @foreach (Destination destination in Model)
                         {
                             <tr>
-                                <td>@viaggio.Id</td>
-                                <td>@viaggio.Name</td>
-                                <td>
-                                    @foreach (Destination destination in viaggio.Destination)
-                                    {
-                                        <span>@destination </span>
-                                    }
-                                </td>
-                                <td><img src="@viaggio.Image" /></td>
-                                <td>@viaggio.Price €</td>
-                                <td><a class="btn btn-warning" href="@Url.Action("Show", "Pizza",new { Id = viaggio.Id - 1 } )">Vedi</a></td>
+                                <td>@destination.Id</td>
+                                <td>@destination.Name</td>
+
+
+                                <td>@destination.Country</td>
+                                <td><a class="btn btn-warning" href="@Url.Action("Show", "Destination",new { Id = destination.Id } )">Vedi</a></td>
                             </tr>
                         }
 
@@ -50,7 +43,7 @@
                         <tr>
                             <td></td>
                             <td>
-                                <h2>No pizze presenti</h2>
+                                <h2>Nessuna destinazione</h2>
                             </td>
                         </tr>
                     }

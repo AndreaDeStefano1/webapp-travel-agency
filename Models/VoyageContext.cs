@@ -22,7 +22,7 @@ namespace webapp_travel_agency.Models
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             string conn = "Data Source=localhost;Initial Catalog=db-viaggi;Integrated Security=True";
-          // la stringa di connsessione la si trova clicando sul db proprietà
+          
             optionsBuilder.UseSqlServer(conn);
         }
     }

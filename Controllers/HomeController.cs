@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using webapp_travel_agency.Models;
 
@@ -12,7 +13,8 @@ namespace webapp_travel_agency.Controllers
         {
             _logger = logger;
         }
-
+        [Authorize]
+        public IActionResult IndexLogged() { return View(); }
         public IActionResult Index()
         {
             return View();

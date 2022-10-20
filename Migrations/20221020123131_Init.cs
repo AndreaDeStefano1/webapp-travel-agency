@@ -49,6 +49,20 @@ namespace webapp_travel_agency.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Destinations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Country = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Destinations", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PacchettiViaggio",
                 columns: table => new
                 {
@@ -111,8 +125,8 @@ namespace webapp_travel_agency.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
@@ -156,8 +170,8 @@ namespace webapp_travel_agency.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -172,23 +186,27 @@ namespace webapp_travel_agency.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Destinations",
+                name: "DestinationPacchettoViaggio",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PacchettoViaggioId = table.Column<int>(type: "int", nullable: true)
+                    DestinationId = table.Column<int>(type: "int", nullable: false),
+                    PacchettiViaggioId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Destinations", x => x.Id);
+                    table.PrimaryKey("PK_DestinationPacchettoViaggio", x => new { x.DestinationId, x.PacchettiViaggioId });
                     table.ForeignKey(
-                        name: "FK_Destinations_PacchettiViaggio_PacchettoViaggioId",
-                        column: x => x.PacchettoViaggioId,
+                        name: "FK_DestinationPacchettoViaggio_Destinations_DestinationId",
+                        column: x => x.DestinationId,
+                        principalTable: "Destinations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DestinationPacchettoViaggio_PacchettiViaggio_PacchettiViaggioId",
+                        column: x => x.PacchettiViaggioId,
                         principalTable: "PacchettiViaggio",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -231,9 +249,9 @@ namespace webapp_travel_agency.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Destinations_PacchettoViaggioId",
-                table: "Destinations",
-                column: "PacchettoViaggioId");
+                name: "IX_DestinationPacchettoViaggio_PacchettiViaggioId",
+                table: "DestinationPacchettoViaggio",
+                column: "PacchettiViaggioId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -254,13 +272,16 @@ namespace webapp_travel_agency.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Destinations");
+                name: "DestinationPacchettoViaggio");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Destinations");
 
             migrationBuilder.DropTable(
                 name: "PacchettiViaggio");

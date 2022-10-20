@@ -12,7 +12,7 @@ using webapp_travel_agency.Models;
 namespace webapp_travel_agency.Migrations
 {
     [DbContext(typeof(VoyageContext))]
-    [Migration("20221020094548_Init")]
+    [Migration("20221020123131_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,6 +23,21 @@ namespace webapp_travel_agency.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("DestinationPacchettoViaggio", b =>
+                {
+                    b.Property<int>("DestinationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PacchettiViaggioId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DestinationId", "PacchettiViaggioId");
+
+                    b.HasIndex("PacchettiViaggioId");
+
+                    b.ToTable("DestinationPacchettoViaggio");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -169,10 +184,12 @@ namespace webapp_travel_agency.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -209,10 +226,12 @@ namespace webapp_travel_agency.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -238,12 +257,7 @@ namespace webapp_travel_agency.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PacchettoViaggioId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("PacchettoViaggioId");
 
                     b.ToTable("Destinations");
                 });
@@ -276,6 +290,21 @@ namespace webapp_travel_agency.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PacchettiViaggio");
+                });
+
+            modelBuilder.Entity("DestinationPacchettoViaggio", b =>
+                {
+                    b.HasOne("webapp_travel_agency.Models.Destination", null)
+                        .WithMany()
+                        .HasForeignKey("DestinationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("webapp_travel_agency.Models.PacchettoViaggio", null)
+                        .WithMany()
+                        .HasForeignKey("PacchettiViaggioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -327,18 +356,6 @@ namespace webapp_travel_agency.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("webapp_travel_agency.Models.Destination", b =>
-                {
-                    b.HasOne("webapp_travel_agency.Models.PacchettoViaggio", null)
-                        .WithMany("Destination")
-                        .HasForeignKey("PacchettoViaggioId");
-                });
-
-            modelBuilder.Entity("webapp_travel_agency.Models.PacchettoViaggio", b =>
-                {
-                    b.Navigation("Destination");
                 });
 #pragma warning restore 612, 618
         }

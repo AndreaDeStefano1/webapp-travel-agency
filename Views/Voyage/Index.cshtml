@@ -6,7 +6,7 @@
 <div class="container">
 
     <div class="text-center">
-        <h1 class="display-4">Gestione PAcchetti</h1>
+        <h1 class="display-4">Gestione Pacchetti</h1>
     </div>
 
     <div class="row">
@@ -17,6 +17,7 @@
                         <th>#</th>
                         <th>Nome</th>
                         <th>Data</th>
+                        <th>Durata</th>
                         <th>Destinazioni</th>
                         <th>Prezzo</th>
                         <th>Azione</th>
@@ -31,13 +32,15 @@
                             <tr>
                                 <td>@viaggio.Id</td>
                                 <td>@viaggio.Name</td>
+                                <td>@viaggio.StartDate</td>
+                                <td>@viaggio.Duration giorni</td>
                                 <td>
                                     @foreach (Destination destination in viaggio.Destination)
                                     {
-                                        <span>@destination </span>
+                                        <span>@destination.Name </span>
                                     }
                                 </td>
-                                <td><img src="@viaggio.Image" /></td>
+                                
                                 <td>@viaggio.Price €</td>
                                 <td><a class="btn btn-warning" href="@Url.Action("Show", "Voyage",new { Id = viaggio.Id } )">Vedi</a></td>
                             </tr>

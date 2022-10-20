@@ -11,10 +11,12 @@ namespace webapp_travel_agency.Models
         public DateTime StartDate { get; set; }
         [Required]
         public int Duration { get; set; }
-        public Destination[]? Destination { get; set; }
+        //errore lasciato al singolare per comodità
+        public List<Destination>? Destination { get; set; }
         [Required]
         public double Price { get; set; }
-        public string Image { get; set; }
+        
+        public string? Image { get; set; }
 
         public PacchettoViaggio()
         {

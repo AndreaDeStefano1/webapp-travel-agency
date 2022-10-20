@@ -1,8 +1,57 @@
 ﻿@{
     ViewData["Title"] = "Create";
 }
+@model SupportModel
 
 <div class="text-center">
-    <h1 class="display-4">Creazione</h1>
+    <h1 class="display-4">Creazione pacchetto viaggio</h1>
     
+</div>
+<div class="container">
+    <form method="post" action="@Url.Action("Create", "Voyage")">
+        @Html.AntiForgeryToken()
+
+        <div class="mb-3">
+            <strong>Nome Pacchetto*:</strong>
+            <input asp-for="PacchettoViaggio.Name" class="d-block w-100" />
+            <span asp-validation-for="PacchettoViaggio.Name" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <strong>Data d'inizio*:</strong>
+            <input asp-for="PacchettoViaggio.StartDate" class="d-block w-100" />
+            <span asp-validation-for="PacchettoViaggio.StartDate" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <strong>Durata in giorni*:</strong>
+            <input asp-for="PacchettoViaggio.Duration" class="d-block w-100" />
+            <span asp-validation-for="PacchettoViaggio.Duration" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <strong>Prezzo*:</strong>
+            <input asp-for="PacchettoViaggio.Price" class="d-block w-100" />
+            <span asp-validation-for="PacchettoViaggio.Price" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <strong>Destinazioni:</strong>
+            <select multiple asp-for="DestinationsIds" class="form-select">
+                @foreach (Destination destination in Model.DestinationsList)
+                {
+                    <option value="@destination.Id">@destination.Name</option>
+                }
+            </select>
+            <span asp-validation-for="DestinationsIds" class="text-danger"></span>
+        </div>
+     
+        <div class="mb-3">
+            <strong>Immagine:</strong>
+            <input asp-for="PacchettoViaggio.Image" class="d-block w-100" />
+            <span asp-validation-for="PacchettoViaggio.Image" class="text-danger"></span>
+        </div>
+
+        <div class="text-end">
+            <input type="submit" class="btn btn-small btn-info" value="Salva">
+        </div>
+    </form>
 </div>

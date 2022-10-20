@@ -1,16 +1,25 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using webapp_travel_agency.Models;
 
 namespace webapp_travel_agency.Controllers
 {
     public class DestinationController : Controller
     {
+        VoyageContext _db;
+
+        public DestinationController()
+        {
+            _db = new VoyageContext();
+        }
         [Authorize]
         // GET: DestinationController
         public ActionResult Index()
         {
-            return View();
+            List<Destination> destinations = _db.Destinations.ToList();
+
+            return View(destinations);
         }
 
         // GET: DestinationController/Details/5
@@ -28,10 +37,13 @@ namespace webapp_travel_agency.Controllers
         // POST: DestinationController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(Destination destination)
         {
             try
             {
+                _db.Destinations.Add(destination);
+                _db.SaveChanges();
+
                 return RedirectToAction(nameof(Index));
             }
             catch
