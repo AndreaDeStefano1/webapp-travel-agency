@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Create";
+}
+@model Destination
+
+<div class="text-center">
+    <h1 class="display-4">Aggiungi destinazione</h1>
+    
+</div>
+<div class="container">
+    <form method="post" action="@Url.Action("Create", "Destination")">
+        @Html.AntiForgeryToken()
+
+        <div class="mb-3">
+            <strong>Città:</strong>
+            <input asp-for="Name" class="d-block w-100" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <strong>Paese:</strong>
+            <input asp-for="Country" class="d-block w-100" />
+            <span asp-validation-for="Country" class="text-danger"></span>
+        </div>
+
+
+        <div class="text-end">
+            <input type="submit" class="btn btn-small btn-info" value="Salva">
+        </div>
+    </form>
+</div>
