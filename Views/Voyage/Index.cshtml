@@ -42,7 +42,16 @@
                                 </td>
                                 
                                 <td>@viaggio.Price €</td>
-                                <td><a class="btn btn-warning" href="@Url.Action("Show", "Voyage",new { Id = viaggio.Id } )">Vedi</a></td>
+                                <td>
+                                    <a class="btn btn-warning" href="@Url.Action("Show", "Voyage",new { Id = viaggio.Id } )">Vedi</a>
+                                    <a class="btn btn-warning" href="@Url.Action("Edit", "Voyage", new { Id = viaggio.Id } )">Modifica</a>
+                                    <form asp-action="Delete" asp-controller="Voyage" asp-route-id="@viaggio.Id" method="post" class="d-inline">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class=" btn btn-danger">
+                                            Elimina
+                                        </button>
+                                    </form>
+                                </td>
                             </tr>
                         }
 

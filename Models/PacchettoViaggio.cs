@@ -15,8 +15,8 @@ namespace webapp_travel_agency.Models
         public List<Destination>? Destination { get; set; }
         [Required]
         public double Price { get; set; }
-        
-        public string? Image { get; set; }
+        [Required]
+        public string Image { get; set; }
 
         public PacchettoViaggio()
         {

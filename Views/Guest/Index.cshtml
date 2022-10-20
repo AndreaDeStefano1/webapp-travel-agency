@@ -1,0 +1,80 @@
+﻿@{
+    ViewData["Title"] = "Viaggia con noi";
+}
+
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col">
+            <h1 class="text-center">Offerte Viaggi</h1>
+            <div>
+                <label for="searchInput">Cerca: </label>
+                <input type="text" id="searchInput" class="my-5" onkeyup="Delay(this.value)" />
+            </div>
+            
+
+            <div class="smartBoxes-container d-flex flex-wrap gap-2"> @*i pacchetti qui*@ </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<script type="text/javascript">
+    let container = document.querySelector('.smartBoxes-container');
+    Search("")
+    let searchTimer;
+
+    function Delay(input) {
+
+        clearTimeout(searchTimer)
+        searchTimer = setTimeout(Search, 1100, input)
+    }
+
+    function Search(input) {
+        container.innerHTML = "";
+        axios.get('/api/Guest?name=' + input)
+            .then(res => {
+                let voyageArray = res.data;
+                if(voyageArray.length < 1){
+                    container.innerHTML = `<div class="text-center"> <h3> La tua ricerca non ha prodotto risultati prova con parole diverse </h3></div>`;
+                }
+                voyageArray.forEach( voyage => {
+                    let destinations = [];
+                    voyage.destination.forEach(destination => {
+                        for (const property in destination) {
+
+                            if(property == "name"){
+                                destinations.push(destination[property]);
+                            }
+                        
+
+                        }
+                    })
+                    container.innerHTML += 
+                    `
+                    <div class="card" style="width: 18rem;">
+                        <img class="card-img-top" src="${voyage.image}" alt="Card image cap">
+                        <div class="card-body">
+                                <h5 class="card-title">${voyage.name}</h5>
+                                <p class="card-text">Destinazioni: ${destinations}.</p>
+                                <a href="#" class="btn btn-primary">${ voyage.price.toFixed(2) } €</a>
+                        </div>
+                    </div>
+                    `;
+                })
+            })
+            .catch( err => {
+                console.log(err);
+            })
+    }
+
+
+
+
+</script>
