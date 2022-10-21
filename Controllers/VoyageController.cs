@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Text;
 using webapp_travel_agency.Models;
 
 namespace webapp_travel_agency.Controllers
@@ -135,6 +136,53 @@ namespace webapp_travel_agency.Controllers
                 _db.SaveChanges();
                 return RedirectToAction("Index");
             
+        }
+        [HttpGet]
+        public FileResult Export()
+        {
+            string[] columnNames = new string[] { "ID", "Name", "StartDate", "Duration", "Description", "Destinations", "Price", "Image" };
+            List<PacchettoViaggio> viaggi = _db.PacchettiViaggio.Include("Destinations").ToList();
+
+            string csv = string.Empty;
+
+            foreach (string columnName in columnNames)
+            {
+                csv += columnName + ',';
+            }
+
+            csv += "\r\n";
+
+            foreach(PacchettoViaggio pacchettoViaggio in viaggi)
+            {
+                csv += pacchettoViaggio.Id.ToString().Replace(",", ";") + ',';
+                csv += pacchettoViaggio.Name.Replace(",", ";") + ',';
+                csv += pacchettoViaggio.StartDate.ToString(("dd/MM/yyyy HH:mm:ss")).Replace(",", ";") + ',';
+                csv += pacchettoViaggio.Duration.ToString().Replace(",", ";") + ',';
+
+                if(pacchettoViaggio.Description != null)
+                {
+                    csv += pacchettoViaggio.Description.Replace(",", ";") + ',';
+                }
+                else
+                {
+                    csv += "" + ',';
+                }
+
+
+                foreach (Destination destination in pacchettoViaggio.Destinations)
+                {
+                    csv += destination.Name + " & " ;
+                }
+                csv += ',';
+                csv += pacchettoViaggio.Price.ToString().Replace(",", ";") + ',';
+                csv += pacchettoViaggio.Image.Replace(",", ";") + ',';
+
+                csv += "\r\n";
+            }
+            byte[] bytes = Encoding.ASCII.GetBytes(csv);
+            return File(bytes, "text/csv", "SmartBox.csv");
+
+
         }
     }
 }
