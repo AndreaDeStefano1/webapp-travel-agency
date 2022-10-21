@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿
+using System.ComponentModel.DataAnnotations;
 
 namespace webapp_travel_agency.Models
 {
@@ -18,6 +19,7 @@ namespace webapp_travel_agency.Models
         public double Price { get; set; }
         [Required]
         public string Image { get; set; }
+        public List<Message> Messages { get; set; }
 
         public PacchettoViaggio()
         {

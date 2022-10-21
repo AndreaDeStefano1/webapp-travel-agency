@@ -8,6 +8,7 @@ namespace webapp_travel_agency.Models
     {
         public DbSet<PacchettoViaggio> PacchettiViaggio { get; set; }
         public DbSet<Destination> Destinations { get; set; }
+        public DbSet<Message> Messages { get; set; }
 
         public VoyageContext()
         {

@@ -9,14 +9,49 @@
 
         <div class="col">
             <h1 class="text-center titolo"> </h1>
-            
 
-            
-            
+
+
+
             <div class="smartBoxes-container d-flex flex-wrap gap-2 my-3"> @*i pacchetti qui*@ </div>
 
         </div>
 
+    </div>
+
+    <h1 class="text-center my-5">Contattaci</h1>
+    <div class="row">
+        <div class="col">
+            <form>
+
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Nome:</label>
+                    <input type="text" class="form-control" id="name" placeholder="Enter name">
+                    <label for="name" id="Name-error" class="form-text text-muted alert alert-danger d-none">Errore.</label>
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Email:</label>
+                    <input type="email" class="form-control" id="email" placeholder="Enter email">
+                    <label for="email" id="Email-error" class="form-text text-muted alert alert-danger d-none">Errore</label>
+                </div>
+
+                <div class="form-group">
+                    <label for="title">Titolo</label>
+                    <input type="text" class="form-control" id="title" placeholder="Enter title">
+                    <label for="title" id="Title-error" class="form-text text-muted alert alert-danger d-none">Errore</label>
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Testo:</label>
+                    <input type="text" class="form-control" id="description" placeholder="Enter message">
+                    <label for="description" id="Text-error" class="form-text text-muted alert alert-danger d-none">Errore</label>
+                </div>
+
+
+                <div onclick="SubmitForm()" class="btn btn-primary">Submit</div>
+            </form>
+        </div>
     </div>
 
 </div>
@@ -38,7 +73,6 @@
                 voyage.destinations.forEach( d => {
                 temp.push(d.name);
                 })
-                debugger;
                 titolo.innerHTML = `${voyage.name}`
                 container.innerHTML += 
 
@@ -60,7 +94,47 @@
         })
     
 
+    function SubmitForm() {
+        document.querySelectorAll(".alert").forEach(el => {
+            el.classList.add('d-none');
+            el.value = "";
+        })
 
+        axios.post("/api/Message", { 
+            name: document.querySelector('#name').value,
+            email: document.querySelector('#email').value,
+            title: document.querySelector('#title').value,
+            text: document.querySelector('#description').value,
+            smartBoxId: id
+            
+           
+
+        })
+            .then(res => {
+                document.querySelectorAll(".alert").forEach(el => {
+                    el.classList.add('d-none');
+
+                })
+
+                document.querySelectorAll(".form-control").forEach(el => {
+                    el.value = "";
+                })
+               
+            })
+            .catch(error => {
+                if (error.response) {
+                    let object = error.response.data.errors;
+                    console.log(object)
+                    for (const property in object) {
+                        document.querySelector(`#${property}-error`).classList.remove('d-none');
+                        console.log(object[property])
+                        document.querySelector(`#${property}-error`).innerHTML = object[property];
+
+                    }
+                }
+            })
+    }
+    
     
 
 
