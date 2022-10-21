@@ -19,15 +19,24 @@ namespace webapp_travel_agency.Controllers.Api
         public IActionResult Get(string? name)
         {
             IQueryable<PacchettoViaggio> smartBoxes;
-            if (name != null)
+            if (name != null )
             {
-                name = name.ToLower();
-                smartBoxes = _db.PacchettiViaggio.Where(s => s.Name.ToLower().Contains(name.ToLower())).Include("Destination");
+                
+
+               
+                name = name.ToLower();  
+                smartBoxes = _db.PacchettiViaggio.Where(s => (s.Name.ToLower().Contains(name)) || (s.Description.Contains(name))).Include("Destinations");
+
                 return Ok(smartBoxes.ToList());
+                
+                
+                 //smartBoxes = _db.PacchettiViaggio.Where(s => s.Description.ToLower().Contains(description.ToLower())).Include("Destinations").Except(smartBoxes);
+
+                
             }
             else
             {
-                smartBoxes = _db.PacchettiViaggio.Include("Destination");
+                smartBoxes = _db.PacchettiViaggio.Include("Destinations");
                 return Ok(smartBoxes.ToList());
             }
 
@@ -38,7 +47,7 @@ namespace webapp_travel_agency.Controllers.Api
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            IQueryable<PacchettoViaggio> smartBoxes = _db.PacchettiViaggio.Where(s => s.Id == id).Include("Destination");
+            IQueryable<PacchettoViaggio> smartBoxes = _db.PacchettiViaggio.Where(s => s.Id == id).Include("Destinations");
             return Ok(smartBoxes.FirstOrDefault());
         }
     }

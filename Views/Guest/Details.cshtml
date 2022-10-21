@@ -1,0 +1,68 @@
+﻿@{
+    ViewData["Title"] = "Viaggia con noi";
+}
+
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col">
+            <h1 class="text-center titolo"> </h1>
+            
+
+            
+            
+            <div class="smartBoxes-container d-flex flex-wrap gap-2 my-3"> @*i pacchetti qui*@ </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<script type="text/javascript">
+    let container = document.querySelector('.smartBoxes-container');
+    let titolo = document.querySelector('.titolo');
+    
+    let temp = window.location.pathname.split("/")
+    let id = temp[temp.length -1 ]
+   
+    container.innerHTML = "";
+    axios.get('/api/Guest/' + id )
+        .then(res => {
+                let voyage = res.data;
+                let temp = [];
+                voyage.destinations.forEach( d => {
+                temp.push(d.name);
+                })
+                debugger;
+                titolo.innerHTML = `${voyage.name}`
+                container.innerHTML += 
+
+                `
+                <div class="card mx-auto" style="width: 50rem;">
+                    <img class="card-img-top" src="${voyage.image}" alt="Card image cap">
+                    <div class="card-body">
+                            <h3 class="card-title">${voyage.name}</h3>
+                            <p class="card-text">Destinazioni: ${temp}.</p>
+                            <p class="card-text">Descrizione: ${ voyage.description ? voyage.description : "Non fornita" }</p>
+                            <a asp-controller="Guest" asp-action="Details" asp-route-id="${voyage.id}" class="btn btn-primary">${voyage.price.toFixed(2)} €</a>
+                    </div>
+                </div>
+                `;
+            
+        })
+        .catch( err => {
+            console.log(err);
+        })
+    
+
+
+    
+
+
+
+</script>

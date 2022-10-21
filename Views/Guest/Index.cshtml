@@ -10,11 +10,12 @@
         <div class="col">
             <h1 class="text-center">Offerte Viaggi</h1>
             <div>
-                <label for="searchInput">Cerca: </label>
-                <input type="text" id="searchInput" class="my-5" onkeyup="Delay(this.value)" />
+                <label for="searchInput">Cerca per nome: </label>
+                <input type="text" id="searchInput" class="my-5" onkeyup="SearchDelay(this.value)" />
             </div>
-            
 
+            
+            
             <div class="smartBoxes-container d-flex flex-wrap gap-2"> @*i pacchetti qui*@ </div>
 
         </div>
@@ -30,7 +31,7 @@
     Search("")
     let searchTimer;
 
-    function Delay(input) {
+    function SearchDelay(input) {
 
         clearTimeout(searchTimer)
         searchTimer = setTimeout(Search, 1100, input)
@@ -38,7 +39,7 @@
 
     function Search(input) {
         container.innerHTML = "";
-        axios.get('/api/Guest?name=' + input)
+        axios.get('/api/Guest?name=' + input /*+ '&description=' + input*/)
             .then(res => {
                 let voyageArray = res.data;
                 if(voyageArray.length < 1){
@@ -46,7 +47,7 @@
                 }
                 voyageArray.forEach( voyage => {
                     let destinations = [];
-                    voyage.destination.forEach(destination => {
+                    voyage.destinations.forEach(destination => {
                         for (const property in destination) {
 
                             if(property == "name"){
@@ -63,7 +64,7 @@
                         <div class="card-body">
                                 <h5 class="card-title">${voyage.name}</h5>
                                 <p class="card-text">Destinazioni: ${destinations}.</p>
-                                <a href="#" class="btn btn-primary">${ voyage.price.toFixed(2) } €</a>
+                                <a href="Guest/Details/${voyage.id}" class="btn btn-primary">${voyage.price.toFixed(2)} €</a>
                         </div>
                     </div>
                     `;
@@ -74,6 +75,8 @@
             })
     }
 
+
+    
 
 
 

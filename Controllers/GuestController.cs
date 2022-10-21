@@ -8,5 +8,10 @@ namespace webapp_travel_agency.Controllers
         {
             return View();
         }
+
+        public IActionResult Details()
+        {
+            return View();
+        }
     }
 }

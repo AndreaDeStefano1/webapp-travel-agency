@@ -19,7 +19,7 @@ namespace webapp_travel_agency.Controllers
         // GET: VoyageController
         public ActionResult Index()
         {
-            List<PacchettoViaggio> voyagies =  _db.PacchettiViaggio.Include("Destination").ToList();
+            List<PacchettoViaggio> voyagies =  _db.PacchettiViaggio.Include("Destinations").ToList();
 
             return View(voyagies);
         }
@@ -53,14 +53,14 @@ namespace webapp_travel_agency.Controllers
                 PacchettoViaggio smartBox = new();
                 smartBox = voyage.PacchettoViaggio;
                 List<Destination> destinations = _db.Destinations.ToList();
-                smartBox.Destination = new();
+                smartBox.Destinations = new();
                 foreach (Destination destination in destinations)
                 {
                     if (voyage.DestinationsIds.Contains(destination.Id))
                     {
                         
                         
-                        smartBox.Destination.Add(destination);
+                        smartBox.Destinations.Add(destination);
                     }
                 }
                 _db.PacchettiViaggio.Add(smartBox);
