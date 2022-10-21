@@ -1,0 +1,43 @@
+﻿@{
+    ViewData["Title"] = "Dettagli";
+}
+@model PacchettoViaggio;
+
+<div class="container detail-container">
+    <img src="@Model.Image" class="card-img-top" alt="Immagine SmartBox">
+
+    <div class="travel-feature  ">
+
+        <div class="voyage-description">
+            <h3 class="my-4"><strong>@Model.Name</strong></h3>
+            <p>
+                <strong>Destinazioni:</strong>
+                @foreach (Destination des in Model.Destinations)
+                {
+                    <span>@des.Name</span>
+                }
+            </p>
+            <p><strong>Descrizione:</strong> @Model.Description</p>
+            <p><strong>Prezzo:</strong> @Model.Price €</p>
+            <p><strong>Messaggi:</strong> </p>
+            @foreach (Message mess in Model.Messages)
+            {
+                <label id="" class="form-text text-muted alert alert-info " style="width: 100%">
+                    <h5>@mess.Name - @mess.Title</h5>
+                    <p>@mess.Text</p>
+                    <span>Rispondi: </span> <a href="#">@mess.Email</a>
+                </label>
+            }
+        </div>
+
+        <div class="actions">
+            <a href="@Url.Action("Edit", "Voyage", new {id = Model.Id})" class="btn btn-primary my-3">Modifica</a>
+            <form asp-controller="PacchettoViaggio" asp-action="Delete" asp-route-id="@Model.Id" method="post">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="btn btn-danger">Elimina</button>
+            </form>
+        </div>
+
+    </div>
+
+</div>

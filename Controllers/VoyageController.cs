@@ -27,9 +27,11 @@ namespace webapp_travel_agency.Controllers
         // GET: VoyageController/Details/5
         public ActionResult Details(int id)
         {
-            PacchettoViaggio voyage = _db.PacchettiViaggio.Include("Destination").Where( s => s.Id == id).FirstOrDefault();
-
-
+            //SupportModel support = new();
+            PacchettoViaggio voyage = _db.PacchettiViaggio.Include("Destinations").Include("Messages").Where( s => s.Id == id).FirstOrDefault();
+            //List<Message> message = _db.Messages.Where(s => s.SmartBoxId == id).ToList();
+            //support.PacchettoViaggio = voyage;
+            //support.Message = message;
             return View(voyage);
         }
 
@@ -83,7 +85,7 @@ namespace webapp_travel_agency.Controllers
             SupportModel support = new();
 
             support.DestinationsList = _db.Destinations.ToList();
-            support.PacchettoViaggio = _db.PacchettiViaggio.Include("Destination").Where(s => s.Id == id).FirstOrDefault();
+            support.PacchettoViaggio = _db.PacchettiViaggio.Include("Destinations").Where(s => s.Id == id).FirstOrDefault();
 
             return View(support);
         }
@@ -95,7 +97,18 @@ namespace webapp_travel_agency.Controllers
         {
             try
             {
+                PacchettoViaggio smartBox = _db.PacchettiViaggio.Find(id);
 
+                smartBox.Name = formData.PacchettoViaggio.Name;
+                smartBox.Description = formData.PacchettoViaggio.Description;
+                smartBox.StartDate = formData.PacchettoViaggio.StartDate;
+                smartBox.Duration = formData.PacchettoViaggio.Duration;
+                smartBox.Price = formData.PacchettoViaggio.Price;
+                smartBox.Destinations = formData.PacchettoViaggio.Destinations;
+                smartBox.Image = formData.PacchettoViaggio.Image;
+                
+                _db.SaveChanges();
+                        
                 return RedirectToAction(nameof(Index));
             }
             catch
